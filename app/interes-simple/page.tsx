@@ -267,13 +267,17 @@ export default function InteresSimple() {
               </p>
             </div>
 
-            {/* Campos de entrada */}
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Layout con dos columnas */}
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Columna izquierda - Campos de entrada */}
               <div>
-                <label className="block text-slate-700 font-bold mb-2 flex items-center gap-2">
-                  Capital (C) 
-                  {incognita === 'C' && <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm font-semibold">← Incógnita</span>}
-                </label>
+                <h3 className="text-xl font-bold text-slate-700 mb-4">📝 Datos de entrada:</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-slate-700 font-bold mb-2 flex items-center gap-2">
+                      Capital (C) 
+                      {incognita === 'C' && <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm font-semibold">← Incógnita</span>}
+                    </label>
                 <input
                   type="number"
                   step="0.01"
@@ -380,52 +384,59 @@ export default function InteresSimple() {
                   placeholder="Opcional (o usa I)"
                 />
                 {errors.M && <p className="text-red-600 text-sm mt-1">{errors.M.message}</p>}
+                  </div>
+                </div>
               </div>
-            </div>
 
-            {/* Fórmula automática */}
-            <div className="mb-6 bg-amber-50 p-6 rounded-xl border-2 border-amber-200">
-              <label className="block text-slate-700 font-bold mb-2">
-                📐 Fórmula a utilizar:
-              </label>
-              <div className="text-2xl font-bold text-amber-700 bg-white p-4 rounded-lg border border-amber-200 text-center">
-                {getFormula()}
+              {/* Columna derecha - Fórmula y Respuesta */}
+              <div>
+                <h3 className="text-xl font-bold text-slate-700 mb-4">🎯 Resolución:</h3>
+                
+                {/* Fórmula automática */}
+                <div className="mb-6 bg-amber-50 p-6 rounded-xl border-2 border-amber-200">
+                  <label className="block text-slate-700 font-bold mb-2">
+                    📐 Fórmula a utilizar:
+                  </label>
+                  <div className="text-2xl font-bold text-amber-700 bg-white p-4 rounded-lg border border-amber-200 text-center">
+                    {getFormula()}
+                  </div>
+                </div>
+
+                {/* Respuesta del usuario */}
+                <div className="mb-6">
+                  <label className="block text-slate-700 font-bold mb-2">
+                    Tu respuesta para <strong className="text-amber-700">{incognita}</strong>:
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    {...register('respuestaUsuario', {
+                      required: 'La respuesta es requerida',
+                      min: { value: 0, message: 'Debe ser mayor o igual a 0' },
+                    })}
+                    className="w-full p-4 border-2 border-slate-300 rounded-xl text-slate-800 font-semibold text-lg transition-all hover:border-slate-400 focus:border-slate-600 focus:ring-4 focus:ring-slate-200 bg-white"
+                    placeholder={`Ingresa el valor de ${incognita}`}
+                  />
+                  {errors.respuestaUsuario && <p className="text-red-600 text-sm mt-1">{errors.respuestaUsuario.message}</p>}
+                </div>
+
+                {/* Botones */}
+                <div className="grid grid-cols-1 gap-4">
+                  <button
+                    type="submit"
+                    className="bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl font-bold text-lg hover:from-amber-700 hover:to-amber-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    ✔️ Evaluar Respuesta
+                  </button>
+                  <button
+                    type="button"
+                    onClick={calcularSolucion}
+                    className="bg-gradient-to-r from-slate-600 to-slate-700 text-white py-4 rounded-xl font-bold text-lg hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    🔍 Ver Solución
+                  </button>
+                </div>
               </div>
-            </div>
-
-            {/* Respuesta del usuario */}
-            <div className="mb-6">
-              <label className="block text-slate-700 font-bold mb-2">
-                Tu respuesta para <strong className="text-amber-700">{incognita}</strong>:
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                {...register('respuestaUsuario', {
-                  required: 'La respuesta es requerida',
-                  min: { value: 0, message: 'Debe ser mayor o igual a 0' },
-                })}
-                className="w-full p-4 border-2 border-slate-300 rounded-xl text-slate-800 font-semibold text-lg transition-all hover:border-slate-400 focus:border-slate-600 focus:ring-4 focus:ring-slate-200 bg-white"
-                placeholder={`Ingresa el valor de ${incognita}`}
-              />
-              {errors.respuestaUsuario && <p className="text-red-600 text-sm mt-1">{errors.respuestaUsuario.message}</p>}
-            </div>
-
-            {/* Botones */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl font-bold text-lg hover:from-amber-700 hover:to-amber-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                ✔️ Evaluar Respuesta
-              </button>
-              <button
-                type="button"
-                onClick={calcularSolucion}
-                className="bg-gradient-to-r from-slate-600 to-slate-700 text-white py-4 rounded-xl font-bold text-lg hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                🔍 Ver Solución
-              </button>
             </div>
           </form>
 

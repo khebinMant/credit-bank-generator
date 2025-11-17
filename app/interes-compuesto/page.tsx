@@ -275,13 +275,17 @@ export default function InteresCompuesto() {
               </p>
             </div>
 
-            {/* Campos de entrada */}
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Layout con dos columnas */}
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Columna izquierda - Campos de entrada */}
               <div>
-                <label className="block text-slate-700 font-bold mb-2 flex items-center gap-2">
-                  Capital (C)
-                  {incognita === 'C' && <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm font-semibold">← Incógnita</span>}
-                </label>
+                <h3 className="text-xl font-bold text-slate-700 mb-4">📝 Datos de entrada:</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-slate-700 font-bold mb-2 flex items-center gap-2">
+                      Capital (C)
+                      {incognita === 'C' && <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm font-semibold">← Incógnita</span>}
+                    </label>
                 <input
                   type="number"
                   step="0.01"
@@ -407,49 +411,56 @@ export default function InteresCompuesto() {
                   placeholder="Opcional"
                 />
                 {errors.I && <p className="text-red-600 text-sm mt-1">{errors.I.message}</p>}
+                  </div>
+                </div>
               </div>
-            </div>
 
-            {/* Fórmula automática */}
-            <div className="mb-6 bg-emerald-50 p-6 rounded-xl border-2 border-emerald-200">
-              <label className="block text-slate-700 font-bold mb-2">
-                📐 Fórmula a utilizar:
-              </label>
-              <div className="text-2xl font-bold text-emerald-700 bg-white p-4 rounded-lg border border-emerald-200 text-center">
-                {getFormula()}
+              {/* Columna derecha - Fórmula y Respuesta */}
+              <div>
+                <h3 className="text-xl font-bold text-slate-700 mb-4">🎯 Resolución:</h3>
+                
+                {/* Fórmula automática */}
+                <div className="mb-6 bg-emerald-50 p-6 rounded-xl border-2 border-emerald-200">
+                  <label className="block text-slate-700 font-bold mb-2">
+                    📐 Fórmula a utilizar:
+                  </label>
+                  <div className="text-2xl font-bold text-emerald-700 bg-white p-4 rounded-lg border border-emerald-200 text-center">
+                    {getFormula()}
+                  </div>
+                </div>
+
+                {/* Respuesta del usuario */}
+                <div className="mb-8">
+                  <label className="block text-slate-700 font-bold mb-2">
+                    💡 Tu respuesta para <strong className="text-emerald-600">{incognita}</strong>:
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    {...register('respuesta', { required: 'La respuesta es requerida' })}
+                    className="w-full p-4 border-2 border-slate-300 rounded-xl text-slate-800 font-semibold text-lg focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all"
+                    placeholder={`Ingresa el valor de ${incognita}`}
+                  />
+                  {errors.respuesta && <p className="text-red-600 text-sm mt-1">{errors.respuesta.message}</p>}
+                </div>
+
+                {/* Botones */}
+                <div className="grid grid-cols-1 gap-4">
+                  <button
+                    type="submit"
+                    className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-5 rounded-xl font-bold text-xl hover:from-emerald-700 hover:to-emerald-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                  >
+                    ✔️ Evaluar Respuesta
+                  </button>
+                  <button
+                    type="button"
+                    onClick={calcularSolucion}
+                    className="bg-gradient-to-r from-slate-600 to-slate-700 text-white py-5 rounded-xl font-bold text-xl hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                  >
+                    🔍 Ver Solución
+                  </button>
+                </div>
               </div>
-            </div>
-
-            {/* Respuesta del usuario */}
-            <div className="mb-8">
-              <label className="block text-slate-700 font-bold mb-2">
-                💡 Tu respuesta para <strong className="text-emerald-600">{incognita}</strong>:
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                {...register('respuesta', { required: 'La respuesta es requerida' })}
-                className="w-full p-4 border-2 border-slate-300 rounded-xl text-slate-800 font-semibold text-lg focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all"
-                placeholder={`Ingresa el valor de ${incognita}`}
-              />
-              {errors.respuesta && <p className="text-red-600 text-sm mt-1">{errors.respuesta.message}</p>}
-            </div>
-
-            {/* Botones */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-5 rounded-xl font-bold text-xl hover:from-emerald-700 hover:to-emerald-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-              >
-                ✔️ Evaluar Respuesta
-              </button>
-              <button
-                type="button"
-                onClick={calcularSolucion}
-                className="bg-gradient-to-r from-slate-600 to-slate-700 text-white py-5 rounded-xl font-bold text-xl hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-              >
-                🔍 Ver Solución
-              </button>
             </div>
           </form>
 
