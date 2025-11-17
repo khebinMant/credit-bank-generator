@@ -20,6 +20,10 @@ export default function InteresCompuesto() {
     valorReal: number;
     mensaje: string;
   } | null>(null);
+  const [solucion, setSolucion] = useState<{
+    valor: number;
+    detalles: string;
+  } | null>(null);
 
   const getFormula = () => {
     switch (incognita) {
@@ -140,6 +144,92 @@ export default function InteresCompuesto() {
         ? '¡Correcto! Tu respuesta es acertada.'
         : `Incorrecto. El valor correcto es: ${valorReal.toFixed(2)}`,
     });
+  };
+
+  const calcularSolucion = () => {
+    const C = parseFloat((document.querySelector('input[name="C"]') as HTMLInputElement)?.value || '0');
+    const iVal = parseFloat((document.querySelector('input[name="i"]') as HTMLInputElement)?.value || '0');
+    const i = iVal / 100;
+    const n = parseFloat((document.querySelector('input[name="n"]') as HTMLInputElement)?.value || '0');
+    const m = parseFloat((document.querySelector('input[name="m"]') as HTMLInputElement)?.value || '0');
+    const M = parseFloat((document.querySelector('input[name="M"]') as HTMLInputElement)?.value || '0');
+    const I = parseFloat((document.querySelector('input[name="I"]') as HTMLInputElement)?.value || '0');
+
+    if (incognita !== 'C' && C === 0) {
+      alert('Debes ingresar el Capital (C)');
+      return;
+    }
+    if (incognita !== 'i' && iVal === 0) {
+      alert('Debes ingresar la Tasa de Interés (i)');
+      return;
+    }
+    if (incognita !== 'n' && n === 0) {
+      alert('Debes ingresar el Tiempo (n)');
+      return;
+    }
+    if (m === 0) {
+      alert('Debes ingresar el número de Capitalizaciones por año (m)');
+      return;
+    }
+
+    let valorCalculado = 0;
+    let detalles = '';
+
+    switch (incognita) {
+      case 'M':
+        valorCalculado = C * Math.pow(1 + i / m, n * m);
+        detalles = `Monto = ${C.toFixed(2)} × (1 + ${(i * 100).toFixed(2)}%/${m})^(${n} × ${m})`;
+        break;
+      case 'I':
+        if (M > 0) {
+          valorCalculado = M - C;
+          detalles = `Interés = ${M.toFixed(2)} - ${C.toFixed(2)}`;
+        } else {
+          const Mcalc = C * Math.pow(1 + i / m, n * m);
+          valorCalculado = Mcalc - C;
+          detalles = `Interés = Monto calculado (${Mcalc.toFixed(2)}) - Capital (${C.toFixed(2)})`;
+        }
+        break;
+      case 'C':
+        if (M > 0) {
+          valorCalculado = M / Math.pow(1 + i / m, n * m);
+          detalles = `Capital = ${M.toFixed(2)} / (1 + ${(i * 100).toFixed(2)}%/${m})^(${n} × ${m})`;
+        } else if (I > 0) {
+          valorCalculado = I / (Math.pow(1 + i / m, n * m) - 1);
+          detalles = `Capital = ${I.toFixed(2)} / ((1 + ${(i * 100).toFixed(2)}%/${m})^(${n} × ${m}) - 1)`;
+        } else {
+          alert('Para calcular C necesitas ingresar M o I');
+          return;
+        }
+        break;
+      case 'i':
+        if (M > 0) {
+          valorCalculado = m * (Math.pow(M / C, 1 / (n * m)) - 1) * 100;
+          detalles = `Tasa = ${m} × ((${M.toFixed(2)}/${C.toFixed(2)})^(1/(${n}×${m})) - 1) × 100`;
+        } else if (I > 0) {
+          valorCalculado = m * (Math.pow((I + C) / C, 1 / (n * m)) - 1) * 100;
+          detalles = `Tasa = ${m} × (((${I.toFixed(2)}+${C.toFixed(2)})/${C.toFixed(2)})^(1/(${n}×${m})) - 1) × 100`;
+        } else {
+          alert('Para calcular i necesitas ingresar M o I');
+          return;
+        }
+        break;
+      case 'n':
+        if (M > 0) {
+          valorCalculado = Math.log(M / C) / (m * Math.log(1 + i / m));
+          detalles = `Tiempo = ln(${M.toFixed(2)}/${C.toFixed(2)}) / (${m} × ln(1 + ${(i * 100).toFixed(2)}%/${m}))`;
+        } else if (I > 0) {
+          valorCalculado = Math.log((I + C) / C) / (m * Math.log(1 + i / m));
+          detalles = `Tiempo = ln((${I.toFixed(2)}+${C.toFixed(2)})/${C.toFixed(2)}) / (${m} × ln(1 + ${(i * 100).toFixed(2)}%/${m}))`;
+        } else {
+          alert('Para calcular n necesitas ingresar M o I');
+          return;
+        }
+        break;
+    }
+
+    setSolucion({ valor: valorCalculado, detalles });
+    setResultado(null);
   };
 
   return (
@@ -345,16 +435,25 @@ export default function InteresCompuesto() {
               {errors.respuesta && <p className="text-red-600 text-sm mt-1">{errors.respuesta.message}</p>}
             </div>
 
-            {/* Botón evaluar */}
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-5 rounded-xl font-bold text-xl hover:from-emerald-700 hover:to-emerald-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-            >
-              ✓ Evaluar Respuesta
-            </button>
+            {/* Botones */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-5 rounded-xl font-bold text-xl hover:from-emerald-700 hover:to-emerald-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+              >
+                ✔️ Evaluar Respuesta
+              </button>
+              <button
+                type="button"
+                onClick={calcularSolucion}
+                className="bg-gradient-to-r from-slate-600 to-slate-700 text-white py-5 rounded-xl font-bold text-xl hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+              >
+                🔍 Ver Solución
+              </button>
+            </div>
           </form>
 
-          {/* Resultado */}
+          {/* Resultado de evaluación */}
           {resultado && (
             <div
               className={`mt-8 p-6 rounded-xl border-2 ${
@@ -373,6 +472,26 @@ export default function InteresCompuesto() {
               <p className={`text-lg ${resultado.correcto ? 'text-emerald-800' : 'text-red-800'}`}>
                 {resultado.mensaje}
               </p>
+            </div>
+          )}
+
+          {/* Solución calculada */}
+          {solucion && (
+            <div className="mt-8 p-8 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-slate-400 shadow-lg">
+              <h3 className="text-2xl font-bold mb-4 text-slate-700 flex items-center gap-2">
+                🧮 Solución Calculada
+              </h3>
+              <div className="bg-white p-6 rounded-lg border border-slate-300 mb-4">
+                <p className="text-slate-600 font-semibold mb-2">Valor de {incognita}:</p>
+                <p className="text-5xl font-bold text-slate-800">
+                  {solucion.valor.toFixed(2)}
+                  {incognita === 'i' && '%'}
+                </p>
+              </div>
+              <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                <p className="text-slate-600 text-sm font-semibold mb-1">Cálculo:</p>
+                <p className="text-slate-700 font-mono text-sm">{solucion.detalles}</p>
+              </div>
             </div>
           )}
         </div>

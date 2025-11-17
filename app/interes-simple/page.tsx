@@ -19,6 +19,10 @@ export default function InteresSimple() {
     valorReal: number;
     mensaje: string;
   } | null>(null);
+  const [solucion, setSolucion] = useState<{
+    valor: number;
+    detalles: string;
+  } | null>(null);
 
   const getFormula = () => {
     switch (incognita) {
@@ -142,6 +146,82 @@ export default function InteresSimple() {
         ? '¡Correcto! Tu respuesta es acertada.'
         : `Incorrecto. El valor correcto es: ${valorReal.toFixed(2)}`,
     });
+  };
+
+  const calcularSolucion = () => {
+    const C = parseFloat((document.querySelector('input[name="C"]') as HTMLInputElement)?.value || '0');
+    const iVal = parseFloat((document.querySelector('input[name="i"]') as HTMLInputElement)?.value || '0');
+    const i = iVal / 100;
+    const n = parseFloat((document.querySelector('input[name="n"]') as HTMLInputElement)?.value || '0');
+    const I = parseFloat((document.querySelector('input[name="I"]') as HTMLInputElement)?.value || '0');
+    const M = parseFloat((document.querySelector('input[name="M"]') as HTMLInputElement)?.value || '0');
+
+    // Validaciones básicas
+    if (incognita !== 'C' && C === 0) {
+      alert('Debes ingresar el Capital (C)');
+      return;
+    }
+    if (incognita !== 'i' && iVal === 0) {
+      alert('Debes ingresar la Tasa de Interés (i)');
+      return;
+    }
+    if (incognita !== 'n' && n === 0) {
+      alert('Debes ingresar el Tiempo (n)');
+      return;
+    }
+
+    let valorCalculado = 0;
+    let detalles = '';
+
+    switch (incognita) {
+      case 'I':
+        valorCalculado = C * i * n;
+        detalles = `Interés = ${C.toFixed(2)} × ${(i * 100).toFixed(2)}% × ${n.toFixed(2)} años`;
+        break;
+      case 'M':
+        valorCalculado = C * (1 + i * n);
+        detalles = `Monto = ${C.toFixed(2)} × (1 + ${(i * 100).toFixed(2)}% × ${n.toFixed(2)})`;
+        break;
+      case 'C':
+        if (I > 0) {
+          valorCalculado = I / (i * n);
+          detalles = `Capital = ${I.toFixed(2)} / (${(i * 100).toFixed(2)}% × ${n.toFixed(2)})`;
+        } else if (M > 0) {
+          valorCalculado = M / (1 + i * n);
+          detalles = `Capital = ${M.toFixed(2)} / (1 + ${(i * 100).toFixed(2)}% × ${n.toFixed(2)})`;
+        } else {
+          alert('Para calcular C necesitas ingresar I o M');
+          return;
+        }
+        break;
+      case 'i':
+        if (I > 0) {
+          valorCalculado = (I / (C * n)) * 100;
+          detalles = `Tasa = (${I.toFixed(2)} / (${C.toFixed(2)} × ${n.toFixed(2)})) × 100`;
+        } else if (M > 0) {
+          valorCalculado = ((M - C) / (C * n)) * 100;
+          detalles = `Tasa = ((${M.toFixed(2)} - ${C.toFixed(2)}) / (${C.toFixed(2)} × ${n.toFixed(2)})) × 100`;
+        } else {
+          alert('Para calcular i necesitas ingresar I o M');
+          return;
+        }
+        break;
+      case 'n':
+        if (I > 0) {
+          valorCalculado = I / (C * i);
+          detalles = `Tiempo = ${I.toFixed(2)} / (${C.toFixed(2)} × ${(i * 100).toFixed(2)}%)`;
+        } else if (M > 0) {
+          valorCalculado = (M - C) / (C * i);
+          detalles = `Tiempo = (${M.toFixed(2)} - ${C.toFixed(2)}) / (${C.toFixed(2)} × ${(i * 100).toFixed(2)}%)`;
+        } else {
+          alert('Para calcular n necesitas ingresar I o M');
+          return;
+        }
+        break;
+    }
+
+    setSolucion({ valor: valorCalculado, detalles });
+    setResultado(null);
   };
 
   return (
@@ -331,16 +411,25 @@ export default function InteresSimple() {
               {errors.respuestaUsuario && <p className="text-red-600 text-sm mt-1">{errors.respuestaUsuario.message}</p>}
             </div>
 
-            {/* Botón evaluar */}
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl font-bold text-lg hover:from-amber-700 hover:to-amber-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              Evaluar Respuesta
-            </button>
+            {/* Botones */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl font-bold text-lg hover:from-amber-700 hover:to-amber-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                ✔️ Evaluar Respuesta
+              </button>
+              <button
+                type="button"
+                onClick={calcularSolucion}
+                className="bg-gradient-to-r from-slate-600 to-slate-700 text-white py-4 rounded-xl font-bold text-lg hover:from-slate-700 hover:to-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                🔍 Ver Solución
+              </button>
+            </div>
           </form>
 
-          {/* Resultado */}
+          {/* Resultado de evaluación */}
           {resultado && (
             <div
               className={`mt-6 p-6 rounded-xl ${
@@ -357,6 +446,26 @@ export default function InteresSimple() {
                 {resultado.correcto ? '✅ ¡Correcto!' : '❌ Incorrecto'}
               </h3>
               <p className="text-slate-700 font-semibold">{resultado.mensaje}</p>
+            </div>
+          )}
+
+          {/* Solución calculada */}
+          {solucion && (
+            <div className="mt-6 p-8 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-slate-400 shadow-lg">
+              <h3 className="text-2xl font-bold mb-4 text-slate-700 flex items-center gap-2">
+                🧮 Solución Calculada
+              </h3>
+              <div className="bg-white p-6 rounded-lg border border-slate-300 mb-4">
+                <p className="text-slate-600 font-semibold mb-2">Valor de {incognita}:</p>
+                <p className="text-5xl font-bold text-slate-800">
+                  {solucion.valor.toFixed(2)}
+                  {incognita === 'i' && '%'}
+                </p>
+              </div>
+              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                <p className="text-slate-600 text-sm font-semibold mb-1">Cálculo:</p>
+                <p className="text-slate-700 font-mono text-sm">{solucion.detalles}</p>
+              </div>
             </div>
           )}
         </div>
