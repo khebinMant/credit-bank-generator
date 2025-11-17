@@ -20,7 +20,7 @@ export default function Sidebar() {
       {/* Botón hamburguesa */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+        className="fixed top-4 left-4 z-50 p-2 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-lg hover:from-slate-800 hover:to-slate-900 transition-all shadow-lg"
         aria-label="Toggle menu"
       >
         <svg
@@ -57,13 +57,13 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-2xl z-40 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-slate-800 to-slate-900 shadow-2xl z-40 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="p-6 mt-16">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
-            Calculadoras
+          <h2 className="text-2xl font-bold text-white mb-6">
+            Calculadoras Financieras
           </h2>
           <nav>
             <ul className="space-y-2">
@@ -74,8 +74,8 @@ export default function Sidebar() {
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                       pathname === item.href
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg'
+                        : 'text-gray-300 hover:bg-slate-700 hover:text-white'
                     }`}
                   >
                     <span className="text-2xl">{item.icon}</span>

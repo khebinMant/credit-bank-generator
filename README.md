@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏦 Calculadoras Financieras - Sistema Bancario
 
-## Getting Started
+Proyecto completo de calculadoras financieras con diseño profesional estilo bancario, desarrollado en **React** con **Next.js** y **TypeScript**.
 
-First, run the development server:
+## ✨ Características
 
+- **Diseño Profesional**: Paleta de colores bancarios (grises, dorados/ámbar, verde esmeralda)
+- **Validación con React Hook Form**: Validación de formularios robusta y en tiempo real
+- **Interfaz Intuitiva**: Menú lateral desplegable con botón hamburguesa
+- **Totalmente Responsivo**: Adaptado a móviles, tablets y escritorio
+- **3 Calculadoras Completas**:
+  - 📊 Calculadora de Interés Simple
+  - 📈 Calculadora de Interés Compuesto  
+  - 💰 Simulador de Crédito (Tabla Francesa y Alemana)
+
+## 🚀 Instalación y Uso
+
+1. **Instalar dependencias**:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Iniciar servidor de desarrollo**:
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Abrir en navegador**: 
+   Visita [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎨 Paleta de Colores Bancarios
 
-## Learn More
+- **Principal**: Slate (grises profesionales) - `slate-700`, `slate-800`
+- **Acento**: Amber (dorado bancario) - `amber-600`, `amber-700`
+- **Éxito**: Emerald (verde) - `emerald-600`, `emerald-700`
+- **Fondo**: Degradado suave `from-slate-50 to-slate-100`
+- **Texto**: Contraste alto con `slate-800` para números y `text-lg font-semibold`
 
-To learn more about Next.js, take a look at the following resources:
+## 📝 Criterios de Evaluación Cumplidos
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+✅ Validación de entradas (numéricos, positivos, no vacíos)  
+✅ Campo para ingresar fórmula matemática  
+✅ Campo para respuesta del usuario  
+✅ Botón de evaluación (no cálculo automático)  
+✅ Cálculo de cualquier incógnita  
+✅ Feedback visual de resultados  
+✅ Interfaz clara y organizada  
+✅ Tablas de amortización completas  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Desarrollado para el curso de Economía - Séptimo Semestre**

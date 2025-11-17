@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="es">
       <body className={inter.className}>
         <Sidebar />
-        <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <main className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
           {children}
         </main>
       </body>

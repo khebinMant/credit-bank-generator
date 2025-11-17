@@ -136,27 +136,28 @@ export default function SimuladorCredito() {
   return (
     <div className="min-h-screen p-8 pt-20">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            💰 Simulador de Crédito Bancario
-          </h1>
-          <p className="text-gray-600 mb-8">
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-8">
+          <div className="border-l-4 border-amber-600 pl-4 mb-6">
+            <h1 className="text-4xl font-bold text-slate-800 mb-2">
+              💰 Simulador de Crédito Bancario
+            </h1>
+            <p className="text-slate-600 mb-4">
             Genera tablas de amortización con sistema <strong>Francés</strong> (cuotas constantes) o{' '}
             <strong>Alemán</strong> (capital constante)
           </p>
 
           {/* Selección de tipo de tabla */}
-          <div className="mb-6">
-            <label className="block text-gray-700 font-semibold mb-2">
+          <div className="mb-8 bg-amber-50 p-6 rounded-xl border border-amber-200">
+            <label className="block text-slate-800 font-bold mb-3 text-lg">
               Selecciona el sistema de amortización:
             </label>
             <div className="grid grid-cols-2 gap-4">
               <button
                 onClick={() => setTipoTabla('francesa')}
-                className={`py-4 px-6 rounded-lg font-semibold transition-all ${
+                className={`py-4 px-6 rounded-xl font-bold text-lg transition-all transform hover:scale-105 ${
                   tipoTabla === 'francesa'
-                    ? 'bg-purple-600 text-white shadow-lg'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg'
+                    : 'bg-white text-slate-700 hover:bg-amber-100 border-2 border-amber-300'
                 }`}
               >
                 🇫🇷 Tabla Francesa
@@ -164,10 +165,10 @@ export default function SimuladorCredito() {
               </button>
               <button
                 onClick={() => setTipoTabla('alemana')}
-                className={`py-4 px-6 rounded-lg font-semibold transition-all ${
+                className={`py-4 px-6 rounded-xl font-bold text-lg transition-all transform hover:scale-105 ${
                   tipoTabla === 'alemana'
-                    ? 'bg-purple-600 text-white shadow-lg'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg'
+                    : 'bg-white text-slate-700 hover:bg-amber-100 border-2 border-amber-300'
                 }`}
               >
                 🇩🇪 Tabla Alemana
@@ -179,53 +180,56 @@ export default function SimuladorCredito() {
           {/* Campos de entrada */}
           <div className="grid md:grid-cols-2 gap-6 mb-6">
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-bold mb-2">
                 Monto del Crédito (C)
               </label>
               <input
                 type="number"
+                step="0.01"
                 value={datos.monto}
                 onChange={(e) => setDatos({ ...datos, monto: e.target.value })}
-                className="w-full p-3 border border-gray-300 rounded-lg"
+                className="w-full p-4 border-2 border-slate-300 rounded-xl text-slate-800 font-semibold text-lg focus:border-amber-600 focus:ring-4 focus:ring-amber-200 transition-all bg-white"
                 placeholder="Ej: 10000"
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-bold mb-2">
                 Tasa de Interés Anual (i) %
               </label>
               <input
                 type="number"
+                step="0.01"
                 value={datos.tasaAnual}
                 onChange={(e) => setDatos({ ...datos, tasaAnual: e.target.value })}
-                className="w-full p-3 border border-gray-300 rounded-lg"
+                className="w-full p-4 border-2 border-slate-300 rounded-xl text-slate-800 font-semibold text-lg focus:border-amber-600 focus:ring-4 focus:ring-amber-200 transition-all bg-white"
                 placeholder="Ej: 12"
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-bold mb-2">
                 Tiempo en años (n)
               </label>
               <input
                 type="number"
+                step="0.01"
                 value={datos.tiempo}
                 onChange={(e) => setDatos({ ...datos, tiempo: e.target.value })}
-                className="w-full p-3 border border-gray-300 rounded-lg"
+                className="w-full p-4 border-2 border-slate-300 rounded-xl text-slate-800 font-semibold text-lg focus:border-amber-600 focus:ring-4 focus:ring-amber-200 transition-all bg-white"
                 placeholder="Ej: 2"
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-bold mb-2">
                 Número de pagos por año (m)
               </label>
               <input
                 type="number"
                 value={datos.pagosAnio}
                 onChange={(e) => setDatos({ ...datos, pagosAnio: e.target.value })}
-                className="w-full p-3 border border-gray-300 rounded-lg"
+                className="w-full p-4 border-2 border-slate-300 rounded-xl text-slate-800 font-semibold text-lg focus:border-amber-600 focus:ring-4 focus:ring-amber-200 transition-all bg-white"
                 placeholder="Ej: 12 (mensual)"
               />
               <p className="text-xs text-gray-500 mt-1">
@@ -237,36 +241,37 @@ export default function SimuladorCredito() {
           {/* Botón calcular */}
           <button
             onClick={handleCalcular}
-            className="w-full bg-purple-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-purple-700 transition-colors shadow-lg"
+            className="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-5 rounded-xl font-bold text-xl hover:from-amber-700 hover:to-amber-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
           >
-            Calcular Tabla de Amortización
+            ✓ Calcular Tabla de Amortización
           </button>
+          </div>
         </div>
 
         {/* Tabla de resultados */}
         {mostrarTabla && tabla.length > 0 && (
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+            <h2 className="text-3xl font-bold text-slate-800 mb-6">
               📋 Tabla de Amortización - Sistema {tipoTabla === 'francesa' ? 'Francés' : 'Alemán'}
             </h2>
 
             {/* Resumen */}
             <div className="grid md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
-                <p className="text-sm text-gray-600">Total a Pagar</p>
-                <p className="text-2xl font-bold text-blue-700">
+              <div className="bg-slate-50 p-4 rounded-xl border-2 border-slate-300">
+                <p className="text-sm text-slate-600 font-semibold">Total a Pagar</p>
+                <p className="text-2xl font-bold text-slate-800">
                   ${totales?.totalCuotas.toFixed(2)}
                 </p>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg border-2 border-green-200">
-                <p className="text-sm text-gray-600">Capital Total</p>
-                <p className="text-2xl font-bold text-green-700">
+              <div className="bg-emerald-50 p-4 rounded-xl border-2 border-emerald-300">
+                <p className="text-sm text-slate-600 font-semibold">Capital Total</p>
+                <p className="text-2xl font-bold text-emerald-700">
                   ${totales?.totalCapital.toFixed(2)}
                 </p>
               </div>
-              <div className="bg-red-50 p-4 rounded-lg border-2 border-red-200">
-                <p className="text-sm text-gray-600">Intereses Totales</p>
-                <p className="text-2xl font-bold text-red-700">
+              <div className="bg-amber-50 p-4 rounded-xl border-2 border-amber-300">
+                <p className="text-sm text-slate-600 font-semibold">Intereses Totales</p>
+                <p className="text-2xl font-bold text-amber-700">
                   ${totales?.totalInteres.toFixed(2)}
                 </p>
               </div>
@@ -275,7 +280,7 @@ export default function SimuladorCredito() {
             {/* Tabla scrollable */}
             <div className="overflow-x-auto max-h-96 overflow-y-auto border rounded-lg">
               <table className="w-full">
-                <thead className="bg-purple-600 text-white sticky top-0">
+                <thead className="bg-gradient-to-r from-slate-700 to-slate-800 text-white sticky top-0">
                   <tr>
                     <th className="px-4 py-3 text-left">Cuota #</th>
                     <th className="px-4 py-3 text-right">Cuota</th>
@@ -290,12 +295,12 @@ export default function SimuladorCredito() {
                       key={fila.numero}
                       className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}
                     >
-                      <td className="px-4 py-3 font-semibold">{fila.numero}</td>
-                      <td className="px-4 py-3 text-right">${fila.cuota.toFixed(2)}</td>
-                      <td className="px-4 py-3 text-right text-green-600">
+                      <td className="px-4 py-3 font-semibold text-slate-800">{fila.numero}</td>
+                      <td className="px-4 py-3 text-right text-slate-800 font-semibold">${fila.cuota.toFixed(2)}</td>
+                      <td className="px-4 py-3 text-right text-emerald-700 font-semibold">
                         ${fila.capital.toFixed(2)}
                       </td>
-                      <td className="px-4 py-3 text-right text-red-600">
+                      <td className="px-4 py-3 text-right text-amber-700 font-semibold">
                         ${fila.interes.toFixed(2)}
                       </td>
                       <td className="px-4 py-3 text-right font-semibold">
@@ -323,7 +328,7 @@ export default function SimuladorCredito() {
             {/* Botón para exportar o imprimir */}
             <button
               onClick={() => window.print()}
-              className="mt-6 bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+              className="mt-6 bg-gradient-to-r from-slate-700 to-slate-800 text-white px-8 py-4 rounded-xl hover:from-slate-800 hover:to-slate-900 transition-all font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               🖨️ Imprimir Tabla
             </button>
